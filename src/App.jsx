@@ -17,12 +17,12 @@ function App() {
     try {
       const snapShot = await getDocs(contactRef);
 
-    const filteredData = snapShot?.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
+      const filteredData = snapShot?.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
 
-    setContacts(filteredData);
+      setContacts(filteredData);
     } catch (error) {
       console.log(error);
     }
@@ -34,11 +34,7 @@ function App() {
     <div className="min-h-screen max-w-[393px] bg-Gray mx-auto pt-4">
       <Nav />
       <Form onOpen={onOpen} />
-      {isOpen && (
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <AddAndUpdateForm contactRef={contactRef} onClose={onClose} getData={getData} />
-        </Modal>
-      )}
+      
       <div className="w-[90%] flex flex-col gap-1 mx-auto mt-8">
         {contacts.map(({ name, mail, id }) => (
           <>
@@ -50,10 +46,21 @@ function App() {
               getData={getData}
               contactRef={contactRef}
               isOpen={isOpen}
+              onOpen={onOpen}
+              onClose={onClose}
             />
           </>
         ))}
       </div>
+      {isOpen && (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <AddAndUpdateForm
+            contactRef={contactRef}
+            onClose={onClose}
+            getData={getData}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

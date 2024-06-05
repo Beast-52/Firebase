@@ -1,15 +1,31 @@
-import { addDoc } from "firebase/firestore";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 
-const AddAndUpdateForm = ({ contactRef, getData,onClose }) => {
+const AddAndUpdateForm = ({
+  name,
+  mail,
+  contactRef,
+  getData,
+  onClose,
+  isUpdate,
+}) => {
   const addContact = async (contact) => {
     await addDoc(contactRef, contact);
     alert("Added Successfully!");
   };
-  
+
   return (
     <Formik
-      initialValues={{ mail: "", name: "" }}
+      initialValues={
+        isUpdate
+          ? {
+              mail,
+              name,
+            }
+          : {
+              mail: "",
+              name: "",
+            }
+      }
       validate={(values) => {
         const errors = {};
 
@@ -59,5 +75,3 @@ const AddAndUpdateForm = ({ contactRef, getData,onClose }) => {
 };
 
 export default AddAndUpdateForm;
-
-

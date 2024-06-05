@@ -1,7 +1,18 @@
 import { doc, deleteDoc as firebaseDeleteDoc } from "firebase/firestore";
 import AddAndUpdateForm from "./AddAndUpdateForm";
+import Modal from "./Modal";
+import { useState } from "react";
 
-const Contact = ({ Name, Email, id, getData, isOpen, contactRef }) => {
+const Contact = ({
+  Name,
+  Email,
+  id,
+  getData,
+  isOpen,
+  onClose,
+  contactRef,
+  onOpen,
+}) => {
   const deleteContact = async (id) => {
     try {
       await firebaseDeleteDoc(doc(contactRef, id));
@@ -10,7 +21,7 @@ const Contact = ({ Name, Email, id, getData, isOpen, contactRef }) => {
       console.log(error);
     }
   };
-
+  const [update,setUpdate] = useState(false)
   return (
     <>
       <div className="bg-Yellow flex justify-between gap-2 items-center p-2 rounded-lg">
@@ -28,6 +39,10 @@ const Contact = ({ Name, Email, id, getData, isOpen, contactRef }) => {
         <div className="editDelete flex gap-2">
           <div className="edit">
             <img
+              onClick={()=>{
+                setUpdate(true)
+                onOpen()
+              }}
               src="/images/mdi_circle-edit-outline.png"
               className="cursor-pointer"
               alt=""
@@ -49,6 +64,10 @@ const Contact = ({ Name, Email, id, getData, isOpen, contactRef }) => {
             contactRef={contactRef}
             onClose={onClose}
             getData={getData}
+            name={Name}
+            mail={Email}
+            id={id}
+            update={update}
           />
         </Modal>
       )}
