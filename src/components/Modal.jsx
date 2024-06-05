@@ -3,9 +3,9 @@ import { createPortal } from "react-dom";
 import { AiOutlineClose } from "react-icons/ai";
 import useDisclosure from "../hooks/useDisclosure";
 
-const Modal = ({ children }) => {
-  const { isOpen, onClose } = useDisclosure();
-  console.log(isOpen);
+const Modal = ({ children,isOpen,onClose }) => {
+
+
   return createPortal(
     <>
       {isOpen && (

@@ -11,42 +11,45 @@ import useDisclosure from "./hooks/useDisclosure";
 function App() {
   const [contacts, setContacts] = useState([]);
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const contactRef = collection(db, "Contacts");
+  const contactRef = collection(db, "contacts");
 
   const getData = async () => {
-    const snapShot = await getDocs(contactRef);
+    try {
+      const snapShot = await getDocs(contactRef);
 
-    const filteredData = snapShot.docs.map((doc) => ({
+    const filteredData = snapShot?.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
     }));
+
     setContacts(filteredData);
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     getData();
-  },[isOpen]);
-
+  }, []);
   return (
     <div className="min-h-screen max-w-[393px] bg-Gray mx-auto pt-4">
       <Nav />
-      <Form 
-      onOpen={onOpen}
-      />
+      <Form onOpen={onOpen} />
       {isOpen && (
-        <Modal>
-          <AddAndUpdateForm contactRef={contactRef} getData={getData} />
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <AddAndUpdateForm contactRef={contactRef} onClose={onClose} getData={getData} />
         </Modal>
       )}
       <div className="w-[90%] flex flex-col gap-1 mx-auto mt-8">
-        {contacts.map(({ Name, Email, id }) => (
+        {contacts.map(({ name, mail, id }) => (
           <>
             <Contact
               key={id}
               id={id}
-              Name={Name}
-              Email={Email}
+              Name={name}
+              Email={mail}
               getData={getData}
               contactRef={contactRef}
+              isOpen={isOpen}
             />
           </>
         ))}

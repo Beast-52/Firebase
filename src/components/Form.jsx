@@ -1,10 +1,9 @@
 
 import React from "react";
 import { IoSearch } from "react-icons/io5";
-import useDisclosure from "../hooks/useDisclosure";
 
-const Form = () => {
-  const { onOpen } = useDisclosure();
+const Form = ({onOpen}) => {
+  
   
   return (
     <div className="flex w-[90%] mx-auto mt-4 items-center justify-center gap-2">
@@ -20,7 +19,7 @@ const Form = () => {
       </div>
       <div>
         <button
-          onClick={()=>onOpen()}
+          onClick={onOpen}
           className="text-3xl bg-white w-10 h-10 rounded-full font-medium flex items-center justify-center"
         >
           <span >+</span>
